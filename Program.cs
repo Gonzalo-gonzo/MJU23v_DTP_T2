@@ -25,7 +25,12 @@ namespace MJU23v_DTP_T2
 
             public Link(string line)
             {
+                // FIXME: Kontrollera om raden innehåller rätt antal delar innan split.
                 string[] parts = line.Split('|');
+                if (parts.Length != 5)
+                {
+                    throw new ArgumentException("Felaktigt format i länkraden.");
+                }
                 Category = parts[0];
                 Group = parts[1];
                 Name = parts[2];
@@ -40,6 +45,7 @@ namespace MJU23v_DTP_T2
 
             public void OpenLink()
             {
+                // FIXME: Lägg till felhantering om länken är ogiltig eller inte kan öppnas.
                 Process application = new Process();
                 application.StartInfo.UseShellExecute = true;
                 application.StartInfo.FileName = Url;
@@ -56,7 +62,7 @@ namespace MJU23v_DTP_T2
         {
             string filePath = @"..\..\..\links\links.lis";
 
-            // Använd den nya metoden för att läsa in länkar från fil
+            // FIXME: Kontrollera om filen existerar innan inläsning.
             links = LoadLinksFromFile(filePath);
 
             Console.WriteLine("Välkommen till länklistan! Skriv 'hjälp' för hjälp!");
@@ -65,14 +71,15 @@ namespace MJU23v_DTP_T2
             {
                 Console.Write("> ");
                 string cmdInput = Console.ReadLine().Trim();
-                string[] cmdParts = cmdInput.Split();
 
-                if (cmdParts.Length == 0)
+                if (string.IsNullOrWhiteSpace(cmdInput))
                 {
+                    // FIXME: Lägg till en vänligare hantering av tomma kommandon.
                     HandleUnknownCommand("");
                     continue;
                 }
 
+                string[] cmdParts = cmdInput.Split();
                 string command = cmdParts[0];
 
                 if (command == "sluta")
@@ -86,9 +93,17 @@ namespace MJU23v_DTP_T2
                 }
                 else if (command == "lista")
                 {
-                    int index = 0;
-                    foreach (Link linkObj in links)
-                        linkObj.Print(index++);
+                    if (links.Count == 0)
+                    {
+                        // FIXME: Informera användaren om att listan är tom.
+                        Console.WriteLine("Inga länkar att visa.");
+                    }
+                    else
+                    {
+                        int index = 0;
+                        foreach (Link linkObj in links)
+                            linkObj.Print(index++);
+                    }
                 }
                 else if (command == "ny")
                 {
@@ -104,6 +119,7 @@ namespace MJU23v_DTP_T2
                     Console.Write("  ange länk: ");
                     string url = Console.ReadLine();
 
+                    // FIXME: Validera URL-formatet innan du lägger till länken.
                     Link newLink = new Link(category, group, name, description, url);
                     links.Add(newLink);
                 }
@@ -112,14 +128,19 @@ namespace MJU23v_DTP_T2
                     if (cmdParts.Length == 2)
                     {
                         filePath = $@"..\..\..\links\{cmdParts[1]}";
-                    }
-
-                    using (StreamWriter writer = new StreamWriter(filePath))
-                    {
-                        foreach (Link linkObj in links)
+                        // FIXME: Kontrollera om det går att skriva till filen innan sparning.
+                        using (StreamWriter writer = new StreamWriter(filePath))
                         {
-                            writer.WriteLine(linkObj.Serialize());
+                            foreach (Link linkObj in links)
+                            {
+                                writer.WriteLine(linkObj.Serialize());
+                            }
                         }
+                        Console.WriteLine($"Länkar sparade till {filePath}.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Fel: Ange ett filnamn för att spara.");
                     }
                 }
                 else if (command == "ladda")
@@ -127,7 +148,9 @@ namespace MJU23v_DTP_T2
                     if (cmdParts.Length == 2)
                     {
                         filePath = $@"..\..\..\links\{cmdParts[1]}";
+                        // FIXME: Kontrollera om filen existerar innan inläsning.
                         links = LoadLinksFromFile(filePath);
+                        Console.WriteLine($"Länkar laddade från {filePath}.");
                     }
                     else
                     {
@@ -143,6 +166,7 @@ namespace MJU23v_DTP_T2
                     }
                     else
                     {
+                        // FIXME: Ge användaren mer information om vad som gick fel.
                         Console.WriteLine("Fel: Ogiltigt index eller kommando.");
                     }
                 }
@@ -162,6 +186,7 @@ namespace MJU23v_DTP_T2
                         }
                         else
                         {
+                            // FIXME: Informera användaren om att gruppen inte hittades.
                             Console.WriteLine($"Fel: Gruppen '{groupName}' hittades inte.");
                         }
                     }
@@ -171,6 +196,7 @@ namespace MJU23v_DTP_T2
                     }
                     else
                     {
+                        // FIXME: Förbättra felmeddelandet för ogiltiga kommandon.
                         Console.WriteLine("Fel: Ogiltigt kommando eller index.");
                     }
                 }
@@ -182,7 +208,6 @@ namespace MJU23v_DTP_T2
             } while (true);
         }
 
-        // Ny metod för att läsa in länkar från fil
         private static List<Link> LoadLinksFromFile(string filePath)
         {
             List<Link> linksList = new List<Link>();
@@ -202,7 +227,6 @@ namespace MJU23v_DTP_T2
             return linksList;
         }
 
-        // Ny metod för att skriva ut hjälptext
         private static void PrintHelp()
         {
             Console.WriteLine("hjälp           - skriv ut den här hjälpen");
@@ -215,9 +239,9 @@ namespace MJU23v_DTP_T2
             Console.WriteLine("öppna grupp <gruppnamn> - öppna alla länkar i en grupp");
         }
 
-        // Ny metod för att hantera okända kommandon
         private static void HandleUnknownCommand(string command)
         {
+            // FIXME: Gör felmeddelandet mer användarvänligt.
             Console.WriteLine($"Okänt kommando: '{command}'");
         }
     }
