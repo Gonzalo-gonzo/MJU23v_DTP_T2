@@ -56,18 +56,8 @@ namespace MJU23v_DTP_T2
         {
             string filePath = @"..\..\..\links\links.lis";
 
-            using (StreamReader reader = new StreamReader(filePath))
-            {
-                int index = 0;
-                string currentLine;
-                while ((currentLine = reader.ReadLine()) != null)
-                {
-                    Console.WriteLine(currentLine);
-                    Link linkObj = new Link(currentLine);
-                    linkObj.Print(index++);
-                    links.Add(linkObj);
-                }
-            }
+            // Använd den nya metoden för att läsa in länkar från fil
+            links = LoadLinksFromFile(filePath);
 
             Console.WriteLine("Välkommen till länklistan! Skriv 'hjälp' för hjälp!");
 
@@ -163,6 +153,26 @@ namespace MJU23v_DTP_T2
                 }
 
             } while (true);
+        }
+
+        // Ny metod för att läsa in länkar från fil
+        private static List<Link> LoadLinksFromFile(string filePath)
+        {
+            List<Link> linksList = new List<Link>();
+
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                int index = 0;
+                string currentLine;
+
+                while ((currentLine = reader.ReadLine()) != null)
+                {
+                    Link linkObj = new Link(currentLine);
+                    linksList.Add(linkObj);
+                }
+            }
+
+            return linksList;
         }
     }
 }
