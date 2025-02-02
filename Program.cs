@@ -66,6 +66,13 @@ namespace MJU23v_DTP_T2
                 Console.Write("> ");
                 string cmdInput = Console.ReadLine().Trim();
                 string[] cmdParts = cmdInput.Split();
+
+                if (cmdParts.Length == 0)
+                {
+                    HandleUnknownCommand("");
+                    continue;
+                }
+
                 string command = cmdParts[0];
 
                 if (command == "sluta")
@@ -117,37 +124,54 @@ namespace MJU23v_DTP_T2
                 }
                 else if (command == "ladda")
                 {
-                    // Använd LoadLinksFromFile istället för duplicerad kod
                     if (cmdParts.Length == 2)
                     {
                         filePath = $@"..\..\..\links\{cmdParts[1]}";
+                        links = LoadLinksFromFile(filePath);
                     }
-
-                    links = LoadLinksFromFile(filePath);
+                    else
+                    {
+                        Console.WriteLine("Fel: Ange en giltig filväg.");
+                    }
                 }
                 else if (command == "ta")
                 {
-                    if (cmdParts[1] == "bort")
+                    if (cmdParts.Length >= 3 && cmdParts[1] == "bort" && int.TryParse(cmdParts[2], out int index) && index >= 0 && index < links.Count)
                     {
-                        links.RemoveAt(int.Parse(cmdParts[2]));
+                        links.RemoveAt(index);
+                        Console.WriteLine($"Länk på index {index} har tagits bort.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Fel: Ogiltigt index eller kommando.");
                     }
                 }
                 else if (command == "öppna")
                 {
-                    if (cmdParts[1] == "grupp")
+                    if (cmdParts.Length >= 3 && cmdParts[1] == "grupp")
                     {
-                        foreach (Link linkObj in links)
+                        string groupName = cmdParts[2];
+                        var groupLinks = links.Where(link => link.Group == groupName).ToList();
+
+                        if (groupLinks.Any())
                         {
-                            if (linkObj.Group == cmdParts[2])
+                            foreach (Link linkObj in groupLinks)
                             {
                                 linkObj.OpenLink();
                             }
                         }
+                        else
+                        {
+                            Console.WriteLine($"Fel: Gruppen '{groupName}' hittades inte.");
+                        }
                     }
-                    else if (cmdParts[1] == "länk")
+                    else if (cmdParts.Length >= 3 && cmdParts[1] == "länk" && int.TryParse(cmdParts[2], out int linkIndex) && linkIndex >= 0 && linkIndex < links.Count)
                     {
-                        int index = int.Parse(cmdParts[2]);
-                        links[index].OpenLink();
+                        links[linkIndex].OpenLink();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Fel: Ogiltigt kommando eller index.");
                     }
                 }
                 else
