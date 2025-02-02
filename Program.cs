@@ -25,7 +25,6 @@ namespace MJU23v_DTP_T2
 
             public Link(string line)
             {
-                // FIXME: Kontrollera om raden innehåller rätt antal delar innan split.
                 string[] parts = line.Split('|');
                 if (parts.Length != 5)
                 {
@@ -45,7 +44,6 @@ namespace MJU23v_DTP_T2
 
             public void OpenLink()
             {
-                // FIXME: Lägg till felhantering om länken är ogiltig eller inte kan öppnas.
                 Process application = new Process();
                 application.StartInfo.UseShellExecute = true;
                 application.StartInfo.FileName = Url;
@@ -62,7 +60,6 @@ namespace MJU23v_DTP_T2
         {
             string filePath = @"..\..\..\links\links.lis";
 
-            // FIXME: Kontrollera om filen existerar innan inläsning.
             links = LoadLinksFromFile(filePath);
 
             Console.WriteLine("Välkommen till länklistan! Skriv 'hjälp' för hjälp!");
@@ -74,7 +71,6 @@ namespace MJU23v_DTP_T2
 
                 if (string.IsNullOrWhiteSpace(cmdInput))
                 {
-                    // FIXME: Lägg till en vänligare hantering av tomma kommandon.
                     HandleUnknownCommand("");
                     continue;
                 }
@@ -95,7 +91,6 @@ namespace MJU23v_DTP_T2
                 {
                     if (links.Count == 0)
                     {
-                        // FIXME: Informera användaren om att listan är tom.
                         Console.WriteLine("Inga länkar att visa.");
                     }
                     else
@@ -119,7 +114,6 @@ namespace MJU23v_DTP_T2
                     Console.Write("  ange länk: ");
                     string url = Console.ReadLine();
 
-                    // FIXME: Validera URL-formatet innan du lägger till länken.
                     Link newLink = new Link(category, group, name, description, url);
                     links.Add(newLink);
                 }
@@ -128,7 +122,6 @@ namespace MJU23v_DTP_T2
                     if (cmdParts.Length == 2)
                     {
                         filePath = $@"..\..\..\links\{cmdParts[1]}";
-                        // FIXME: Kontrollera om det går att skriva till filen innan sparning.
                         using (StreamWriter writer = new StreamWriter(filePath))
                         {
                             foreach (Link linkObj in links)
@@ -148,7 +141,6 @@ namespace MJU23v_DTP_T2
                     if (cmdParts.Length == 2)
                     {
                         filePath = $@"..\..\..\links\{cmdParts[1]}";
-                        // FIXME: Kontrollera om filen existerar innan inläsning.
                         links = LoadLinksFromFile(filePath);
                         Console.WriteLine($"Länkar laddade från {filePath}.");
                     }
@@ -166,7 +158,6 @@ namespace MJU23v_DTP_T2
                     }
                     else
                     {
-                        // FIXME: Ge användaren mer information om vad som gick fel.
                         Console.WriteLine("Fel: Ogiltigt index eller kommando.");
                     }
                 }
@@ -186,7 +177,6 @@ namespace MJU23v_DTP_T2
                         }
                         else
                         {
-                            // FIXME: Informera användaren om att gruppen inte hittades.
                             Console.WriteLine($"Fel: Gruppen '{groupName}' hittades inte.");
                         }
                     }
@@ -196,7 +186,6 @@ namespace MJU23v_DTP_T2
                     }
                     else
                     {
-                        // FIXME: Förbättra felmeddelandet för ogiltiga kommandon.
                         Console.WriteLine("Fel: Ogiltigt kommando eller index.");
                     }
                 }
@@ -241,7 +230,6 @@ namespace MJU23v_DTP_T2
 
         private static void HandleUnknownCommand(string command)
         {
-            // FIXME: Gör felmeddelandet mer användarvänligt.
             Console.WriteLine($"Okänt kommando: '{command}'");
         }
     }
