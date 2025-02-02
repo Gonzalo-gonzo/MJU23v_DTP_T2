@@ -75,14 +75,8 @@ namespace MJU23v_DTP_T2
                 }
                 else if (command == "hjälp")
                 {
-                    Console.WriteLine("hjälp           - skriv ut den här hjälpen");
-                    Console.WriteLine("sluta           - avsluta programmet");
-                    Console.WriteLine("lista           - lista alla länkar");
-                    Console.WriteLine("ny              - skapa en ny länk");
-                    Console.WriteLine("spara           - spara länkar till fil");
-                    Console.WriteLine("ta bort <index> - ta bort en länk");
-                    Console.WriteLine("öppna länk <index> - öppna en specifik länk");
-                    Console.WriteLine("öppna grupp <gruppnamn> - öppna alla länkar i en grupp");
+                    // Använd den nya metoden för att skriva ut hjälptext
+                    PrintHelp();
                 }
                 else if (command == "lista")
                 {
@@ -173,6 +167,19 @@ namespace MJU23v_DTP_T2
             }
 
             return linksList;
+        }
+
+        // Ny metod för att skriva ut hjälptext
+        private static void PrintHelp()
+        {
+            Console.WriteLine("hjälp           - skriv ut den här hjälpen");
+            Console.WriteLine("sluta           - avsluta programmet");
+            Console.WriteLine("lista           - lista alla länkar");
+            Console.WriteLine("ny              - skapa en ny länk");
+            Console.WriteLine("spara           - spara länkar till fil");
+            Console.WriteLine("ta bort <index> - ta bort en länk");
+            Console.WriteLine("öppna länk <index> - öppna en specifik länk");
+            Console.WriteLine("öppna grupp <gruppnamn> - öppna alla länkar i en grupp");
         }
     }
 }
