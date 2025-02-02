@@ -115,6 +115,16 @@ namespace MJU23v_DTP_T2
                         }
                     }
                 }
+                else if (command == "ladda")
+                {
+                    // Använd LoadLinksFromFile istället för duplicerad kod
+                    if (cmdParts.Length == 2)
+                    {
+                        filePath = $@"..\..\..\links\{cmdParts[1]}";
+                    }
+
+                    links = LoadLinksFromFile(filePath);
+                }
                 else if (command == "ta")
                 {
                     if (cmdParts[1] == "bort")
@@ -142,7 +152,6 @@ namespace MJU23v_DTP_T2
                 }
                 else
                 {
-                    // Använd den nya metoden för att hantera okända kommandon
                     HandleUnknownCommand(command);
                 }
 
