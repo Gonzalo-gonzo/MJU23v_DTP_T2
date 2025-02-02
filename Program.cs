@@ -75,7 +75,6 @@ namespace MJU23v_DTP_T2
                 }
                 else if (command == "hjälp")
                 {
-                    // Använd den nya metoden för att skriva ut hjälptext
                     PrintHelp();
                 }
                 else if (command == "lista")
@@ -143,7 +142,8 @@ namespace MJU23v_DTP_T2
                 }
                 else
                 {
-                    Console.WriteLine($"Okänt kommando: '{command}'");
+                    // Använd den nya metoden för att hantera okända kommandon
+                    HandleUnknownCommand(command);
                 }
 
             } while (true);
@@ -180,6 +180,12 @@ namespace MJU23v_DTP_T2
             Console.WriteLine("ta bort <index> - ta bort en länk");
             Console.WriteLine("öppna länk <index> - öppna en specifik länk");
             Console.WriteLine("öppna grupp <gruppnamn> - öppna alla länkar i en grupp");
+        }
+
+        // Ny metod för att hantera okända kommandon
+        private static void HandleUnknownCommand(string command)
+        {
+            Console.WriteLine($"Okänt kommando: '{command}'");
         }
     }
 }
